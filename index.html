@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poisk-ls Tech Hub</title>
+    
+    <!-- jQuery Mobile CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    
+    <!-- jQuery Mobile -->
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .category-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto;
+            display: block;
+        }
+        .ui-content {
+            padding: 15px;
+        }
+        .app-footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.8em;
+            color: whitesmoke!important;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #f7f7f7;
+            border-top: 1px solid #ddd!important;
+            text-shadow: none!important;
+        }
+        .dark-mode .app-footer {
+            background: #333!important;
+            border-top: 1px solid #444!important;
+        }
+        .category-card {
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .category-header {
+            padding: 10px 15px;
+            font-weight: bold;
+            background-color: #f7f7f7!important;
+            border-bottom: 1px solid #ddd;
+            text-shadow: none!important;
+        }
+        .category-content {
+            padding: 15px;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        .dark-mode {
+            background-color: #222!important;
+            color: #eee!important;
+        }
+        .dark-mode .category-header {
+            background-color: #333!important;
+            color: #eee!important;
+            border-bottom: 1px solid #444;
+        }
+        .dark-mode .category-card {
+            background-color: #333!important;
+            color: #eee!important;
+        }
+        .dark-mode .ui-page {
+            background-color: #222!important;
+            color: #eee!important;
+        }
+        .dark-mode .ui-listview {
+            background-color: #333!important;
+        }
+        .dark-mode .ui-listview a {
+            color: #eee;
+        }
+        .dark-mode .ui-listview li {
+            border-color: #444!important;
+        }
+        .developer-card {
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3)!important;
+            color: white!important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .developer-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin: 0 auto 15px;
+            object-fit: cover;
+        }
+        .social-links {
+            margin-top: 15px;
+        }
+        .social-links a {
+            color: white!important;
+            margin: 0 10px;
+            font-size: 20px;
+        }
+        .command-box {
+            background: #333!important;
+            color: #0f0!important;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .news-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9!important;
+        }
+        .dark-mode .news-item {
+            background-color: #333!important;
+        }
+        .news-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-shadow: none!important;
+        }
+        .news-date {
+            font-size: 0.8em;
+            color: #666!important;
+        }
+        .dark-mode .news-date {
+            color: #aaa!important;
+        }
+        .terminal {
+            background-color: #000!important;
+            color: #0f0!important;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        .terminal-line {
+            margin-bottom: 5px;
+        }
+        .terminal-prompt {
+            color: #0ff!important;
+        }
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+        .dark-mode .tab-buttons {
+            border-bottom: 1px solid #444;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #f7f7f7!important;
+            border: none;
+            outline: none;
+            text-shadow: none!important;
+        }
+        .dark-mode .tab-button {
+            background-color: #333!important;
+            color: #eee!important;
+        }
+        .tab-button.active {
+            background-color: #6e8efb!important;
+            color: white!important;
+        }
+        .tab-content {
+            display: none;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+        }
+        .dark-mode .tab-content {
+            border-color: #444!important;
+            background-color: #333!important;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .feature-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: #6e8efb!important;
+        }
+        .dark-mode .feature-icon {
+            color: #a777e3!important;
+        }
+        .ui-page {
+            padding-bottom: 60px; /* Add padding to prevent footer overlap */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            text-shadow: none!important;
+        }
+        li{
+          list-style-type: none!important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Home Page -->
+<div data-role="page" id="home">
+    <div data-role="header" data-theme="b">
+        <h1>Poisk-ls Tech Hub</h1>
+        <a href="#settings" class="ui-btn ui-btn-right ui-icon-gear ui-btn-icon-left">Settings</a>
+    </div>
+    
+    <div role="main" class="ui-content">
+        <h2>Welcome to Poisk-ls Tech Hub</h2>
+        <p>Your one-stop resource for tech information and tools</p>
+        
+        <div class="search-box">
+            <input type="search" id="search-input" placeholder="Search tech topics...">
+            <button class="ui-btn ui-btn-inline" onclick="searchTech()">Search</button>
+        </div>
+        
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+                <div class="category-card" onclick="showCategory('termux')">
+                    <div class="category-header">Termux</div>
+                    <div class="category-content">
+                        <img src="https://cdn-icons-png.flaticon.com/512/337/337953.png" class="category-icon" alt="Termux">
+                        <p>Linux environment for Android</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-block-b">
+                <div class="category-card" onclick="showCategory('android')">
+                    <div class="category-header">Android</div>
+                    <div class="category-content">
+                        <img src="https://cdn-icons-png.flaticon.com/512/226/226770.png" class="category-icon" alt="Android">
+                        <p>Mobile operating system</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-block-a">
+                <div class="category-card" onclick="showCategory('windows')">
+                    <div class="category-header">Windows</div>
+                    <div class="category-content">
+                        <img src="https://cdn-icons-png.flaticon.com/512/888/888882.png" class="category-icon" alt="Windows">
+                        <p>Desktop operating system</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-block-b">
+                <div class="category-card" onclick="showCategory('linux')">
+                    <div class="category-header">Linux</div>
+                    <div class="category-content">
+                        <img src="https://cdn-icons-png.flaticon.com/512/6124/6124995.png" class="category-icon" alt="Linux">
+                        <p>Open-source operating system</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="openTab('news-tab')">Tech News</button>
+                <button class="tab-button" onclick="openTab('tools-tab')">Quick Tools</button>
+            </div>
+            
+            <div id="news-tab" class="tab-content active">
+                <div class="news-item">
+                    <div class="news-title">Termux 2.0 Released</div>
+                    <div class="news-date">June 15, 2023</div>
+                    <p>New update brings improved package management and better Android 13 compatibility.</p>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">Android 14 Beta Available</div>
+                    <div class="news-date">May 30, 2023</div>
+                    <p>Google releases first beta of Android 14 with new privacy features.</p>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">Windows 11 23H2 Update</div>
+                    <div class="news-date">May 25, 2023</div>
+                    <p>Microsoft announces major update with new AI features and UI improvements.</p>
+                </div>
+            </div>
+            
+            <div id="tools-tab" class="tab-content">
+                <button class="ui-btn ui-btn-inline" onclick="showIP()">Show My IP</button>
+                <button class="ui-btn ui-btn-inline" onclick="showUserAgent()">Show User Agent</button>
+                <button class="ui-btn ui-btn-inline" onclick="pingTest()">Ping Test</button>
+                <button class="ui-btn ui-btn-inline" onclick="showScreenResolution()">Screen Resolution</button>
+            </div>
+        </div>
+        
+        <button class="ui-btn ui-btn-b ui-corner-all" onclick="showAbout()">About This App</button>
+    </div>
+    
+    <div data-role="footer" class="app-footer" data-position="fixed">
+        <p>Poisk-ls Tech Hub &copy; 2023 | Developed by Poisk-ls</p>
+    </div>
+</div>
+
+<!-- Termux Page -->
+<div data-role="page" id="termux">
+    <div data-role="header" data-theme="b">
+        <a href="#home" class="ui-btn ui-btn-left ui-icon-home ui-btn-icon-left">Home</a>
+        <h1>Termux</h1>
+    </div>
+    
+    <div role="main" class="ui-content">
+        <h2>Termux Information</h2>
+        <p>Termux is a terminal emulator and Linux environment for Android.</p>
+        
+        <div class="terminal" id="termux-terminal">
+            <div class="terminal-line"><span class="terminal-prompt">$</span> Welcome to Termux!</div>
+            <div class="terminal-line"><span class="terminal-prompt">$</span> Type 'help' for basic information</div>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="openTermuxTab('commands-tab')">Commands</button>
+                <button class="tab-button" onclick="openTermuxTab('packages-tab')">Packages</button>
+                <button class="tab-button" onclick="openTermuxTab('tutorial-tab')">Tutorial</button>
+            </div>
+            
+            <div id="commands-tab" class="tab-content active">
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">Common Commands</li>
+                    <li><a href="#" onclick="showCommand('pkg update && pkg upgrade')">Update packages</a></li>
+                    <li><a href="#" onclick="showCommand('pkg install [package-name]')">Install a package</a></li>
+                    <li><a href="#" onclick="showCommand('pkg list-all')">List available packages</a></li>
+                    <li><a href="#" onclick="showCommand('cd [directory]')">Change directory</a></li>
+                    <li><a href="#" onclick="showCommand('ls')">List files</a></li>
+                    <li><a href="#" onclick="showCommand('termux-setup-storage')">Setup storage access</a></li>
+                    <li><a href="#" onclick="showCommand('ssh user@host')">SSH connection</a></li>
+                </ul>
+            </div>
+            
+            <div id="packages-tab" class="tab-content">
+                <ul data-role="listview" data-inset="true">
+                    <li data-role="list-divider">Popular Packages</li>
+                    <li><a href="#" onclick="showPackageInfo('python')">Python</a></li>
+                    <li><a href="#" onclick="showPackageInfo('git')">Git</a></li>
+                    <li><a href="#" onclick="showPackageInfo('nmap')">Nmap</a></li>
+                    <li><a href="#" onclick="showPackageInfo('nodejs')">Node.js</a></li>
+                    <li><a href="#" onclick="showPackageInfo('ffmpeg')">FFmpeg</a></li>
+                    <li><a href="#" onclick="showPackageInfo('wget')">Wget</a></li>
+                    <li><a href="#" onclick="showPackageInfo('openssh')">OpenSSH</a></li>
+                </ul>
+            </div>
+            
+            <div id="tutorial-tab" class="tab-content">
+                <h3>Getting Started with Termux</h3>
+                <ol>
+                    <li>Update packages: <span class="command-box">pkg update && pkg upgrade</span></li>
+                    <li>Install your first package: <span class="command-box">pkg install python</span></li>
+                    <li>Access storage: <span class="command-box">termux-setup-storage</span></li>
+                    <li>Start coding!</li>
+                </ol>
+                <button class="ui-btn ui-btn-b ui-corner-all" onclick="showTermuxTip()">Random Tip</button>
+            </div>
+        </div>
+    </div>
+    
+    <div data-role="footer" class="app-footer" data-position="fixed">
+        <p>Poisk-ls Tech Hub &copy; 2023 | Developed by Poisk-ls</p>
+    </div>
+</div>
+
+<!-- Android Page -->
+<div data-role="page" id="android">
+    <div data-role="header" data-theme="b">
+        <a href="#home" class="ui-btn ui-btn-left ui-icon-home ui-btn-icon-left">Home</a>
+        <h1>Android</h1>
+    </div>
+    
+    <div role="main" class="ui-content">
+        <h2>Android Information</h2>
+        <p>Android is a mobile operating system based on a modified version of the Linux kernel.</p>
+        
+        <div class="ui-field-contain">
+            <label for="android-version">Select Android Version:</label>
+            <select name="android-version" id="android-version" data-native-menu="false" onchange="showAndroidVersionInfo()">
+                <option value="">Choose one...</option>
+                <option value="14">Android 14 (Beta)</option>
+                <option value="13">Android 13 (Tiramisu)</option>
+                <option value="12">Android 12 (Snow Cone)</option>
+                <option value="11">Android 11 (Red Velvet Cake)</option>
+                <option value="10">Android 10 (Quince Tart)</option>
+            </select>
+        </div>
+        
+        <div id="android-version-info" style="display:none;">
+            <h3 id="android-version-title"></h3>
+            <p id="android-version-desc"></p>
+            <p id="android-version-features"></p>
+        </div>
+        
+        <ul data-role="listview" data-inset="true">
+            <li data-role="list-divider">Developer Options</li>
+            <li><a href="#" onclick="showAndroidTip('To enable Developer Options, go to Settings > About phone and tap Build number 7 times.')">Enable Developer Options</a></li>
+            <li><a href="#" onclick="showAndroidTip('USB debugging allows your Android device to communicate with a computer for development purposes.')">USB Debugging</a></li>
+            <li><a href="#" onclick="showAndroidTip('OEM unlocking allows the bootloader to be unlocked, necessary for custom ROMs.')">OEM Unlocking</a></li>
+            <li><a href="#" onclick="showAndroidTip('ADB (Android Debug Bridge) is a versatile command-line tool for device communication.')">ADB Commands</a></li>
+            <li><a href="#" onclick="showAndroidTip('Fastboot is a protocol for modifying the flash filesystem via USB.')">Fastboot Commands</a></li>
+        </ul>
+        
+        <button class="ui-btn ui-btn-b ui-corner-all" onclick="showAndroidFeature()">Random Feature</button>
+    </div>
+    
+    <div data-role="footer" class="app-footer" data-position="fixed">
+        <p>Poisk-ls Tech Hub &copy; 2023 | Developed by Poisk-ls</p>
+    </div>
+</div>
+
+<!-- Windows Page -->
+<div data-role="page" id="windows">
+    <div data-role="header" data-theme="b">
+        <a href="#home" class="ui-btn ui-btn-left ui-icon-home ui-btn-icon-left">Home</a>
+        <h1>Windows</h1>
+    </div>
+    
+    <div role="main" class="ui-content">
+        <h2>Windows Information</h2>
+        <p>Microsoft Windows is a group of several proprietary graphical operating system families.</p>
+        
+        <div class="ui-grid-a">
+            <div class="ui-block-a">
+                <button class="ui-btn ui-corner-all" onclick="showWindowsVersion('10')">Windows 10</button>
+            </div>
+            <div class="ui-block-b">
+                <button class="ui-btn ui-corner-all" onclick="showWindowsVersion('11')">Windows 11</button>
+            </div>
+        </div>
+        
+        <ul data-role="listview" data-inset="true">
+            <li data-role="list-divider">Useful Shortcuts</li>
+            <li><a href="#" onclick="showWindowsShortcut('Win + D: Show desktop')">Show Desktop</a></li>
+            <li><a href="#" onclick="showWindowsShortcut('Win + E: Open File Explorer')">File Explorer</a></li>
+            <li><a href="#" onclick="showWindowsShortcut('Win + R: Open Run dialog')">Run Dialog</a></li>
+            <li><a href="#" onclick="showWindowsShortcut('Win + L: Lock your PC')">Lock PC</a></li>
+            <li><a href="#" onclick="showWindowsShortcut('Ctrl + Shift + Esc: Open Task Manager')">Task Manager</a></li>
+            <li><a href="#" onclick="showWindowsShortcut('Win + V: Open clipboard history')">Clipboard History</a></li>
+            <li><a href="#" onclick="showWindowsShortcut('Win + . : Open emoji picker')">Emoji Picker</a></li>
+        </ul>
+        
+        <ul data-role="listview" data-inset="true">
+            <li data-role="list-divider">CMD Commands</li>
+            <li><a href="#" onclick="showWindowsCommand('ipconfig')">Show network info</a></li>
+            <li><a href="#" onclick="showWindowsCommand('ping google.com')">Ping a website</a></li>
+            <li><a href="#" onclick="showWindowsCommand('systeminfo')">System information</a></li>
+            <li><a href="#" onclick="showWindowsCommand('chkdsk')">Check disk</a></li>
+            <li><a href="#" onclick="showWindowsCommand('sfc /scannow')">System file checker</a></li>
+        </ul>
+    </div>
+    
+    <div data-role="footer" class="app-footer" data-position="fixed">
+        <p>Poisk-ls Tech Hub &copy; 2023 | Developed by Poisk-ls</p>
+    </div>
+</div>
+
+<!-- Linux Page -->
+<div data-role="page" id="linux">
+    <div data-role="header" data-theme="b">
+        <a href="#home" class="ui-btn ui-btn-left ui-icon-home ui-btn-icon-left">Home</a>
+        <h1>Linux</h1>
+    </div>
+    
+    <div role="main" class="ui-content">
+        <h2>Linux Information</h2>
+        <p>Linux is a family of open-source Unix-like operating systems based on the Linux kernel.</p>
+        
+        <div class="ui-field-contain">
+            <label for="linux-distro">Select Distribution:</label>
+            <select name="linux-distro" id="linux-distro" data-native-menu="false" onchange="showLinuxDistroInfo()">
+                <option value="">Choose one...</option>
+                <option value="ubuntu">Ubuntu</option>
+                <option value="debian">Debian</option>
+                <option value="fedora">Fedora</option>
+                <option value="arch">Arch Linux</option>
+                <option value="kali">Kali Linux</option>
+            </select>
+        </div>
+        
+        <div id="linux-distro-info" style="display:none;">
+            <h3 id="linux-distro-title"></h3>
+            <p id="linux-distro-desc"></p>
+            <p id="linux-distro-packages"></p>
+        </div>
+        
+        <ul data-role="listview" data-inset="true">
+            <li data-role="list-divider">Essential Commands</li>
+            <li><a href="#" onclick="showLinuxCommand('sudo apt update && sudo apt upgrade')">Update system (Debian/Ubuntu)</a></li>
+            <li><a href="#" onclick="showLinuxCommand('sudo dnf update')">Update system (Fedora/RHEL)</a></li>
+            <li><a href="#" onclick="showLinuxCommand('sudo pacman -Syu')">Update system (Arch)</a></li>
+            <li><a href="#" onclick="showLinuxCommand('ls')">List files</a></li>
+            <li><a href="#" onclick="showLinuxCommand('cd')">Change directory</a></li>
+            <li><a href="#" onclick="showLinuxCommand('chmod')">Change permissions</a></li>
+            <li><a href="#" onclick="showLinuxCommand('grep')">Search text</a></li>
+        </ul>
+    </div>
+    
+    <div data-role="footer" class="app-footer" data-position="fixed">
+        <p>Poisk-ls Tech Hub &copy; 2023 | Developed by Poisk-ls</p>
+    </div>
+</div>
+
+<!-- Settings Page -->
+<div data-role="page" id="settings">
+    <div data-role="header" data-theme="b">
+        <a href="#home" class="ui-btn ui-btn-left ui-icon-home ui-btn-icon-left">Home</a>
+        <h1>Settings</h1>
+    </div>
+    
+    <div role="main" class="ui-content">
+        <h2>App Settings</h2>
+        
+        <div class="ui-field-contain">
+            <label for="theme-select">Theme:</label>
+            <select name="theme-select" id="theme-select" data-native-menu="false">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+            </select>
+        </div>
+        
+        <div class="ui-field-contain">
+            <label for="font-size">Font Size:</label>
+            <select name="font-size" id="font-size" data-native-menu="false">
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+            </select>
+        </div>
+        
+        <fieldset data-role="controlgroup">
+            <legend>Features:</legend>
+            <input type="checkbox" name="news-notifications" id="news-notifications" checked>
+            <label for="news-notifications">Show news notifications</label>
+            <input type="checkbox" name="command-copy" id="command-copy" checked>
+            <label for="command-copy">Enable copy button for commands</label>
+        </fieldset>
+        
+        <button class="ui-btn ui-btn-b ui-corner-all" onclick="saveSettings()">Save Settings</button>
+        
+        <div class="developer-card">
+            <h3>About the Developer</h3>
+            <img src="poisk.png" width="100">
+            <h4>Poisk-ls</h4>
+            <p>Terminal and developer</p>
+            <div class="social-links">
+                <a href="https://github.com/poisk-ls" onclick="showSocial('github')"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/poisk-ls" onclick="showSocial('linkedin')"><i class="fab fa-linkedin"></i></a>
+                <a href="https://poisk-ls.blogspot.com" onclick="showSocial('website')"><i class="fas fa-globe"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <div data-role="footer" class="app-footer" data-position="fixed">
+        <p>Poisk-ls Tech Hub &copy; 2023 | Developed by Poisk-ls</p>
+    </div>
+</div>
+
+<script>
+    // Function to navigate to a category page
+    function showCategory(category) {
+        $.mobile.changePage("#" + category, {
+            transition: "slide"
+        });
+    }
+    
+    // Function to show a Termux command
+    function showCommand(cmd) {
+        Swal.fire({
+            title: 'Termux Command',
+            html: `<p>Run this command in Termux:</p>
+                  <div class="command-box">
+                      ${cmd}
+                  </div>
+                  ${document.getElementById('command-copy').checked ? 
+                  '<button class="ui-btn ui-btn-inline" onclick="copyToClipboard(\'' + cmd + '\')">Copy Command</button>' : ''}`,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+    
+    // Function to show a package info
+    function showPackageInfo(pkg) {
+        const packages = {
+            'python': 'Python is a programming language that lets you work quickly. Install with: pkg install python',
+            'git': 'Git is a version control system. Install with: pkg install git',
+            'nmap': 'Nmap is a network scanner. Install with: pkg install nmap',
+            'nodejs': 'Node.js is a JavaScript runtime. Install with: pkg install nodejs',
+            'ffmpeg': 'FFmpeg is a multimedia framework. Install with: pkg install ffmpeg',
+            'wget': 'Wget is a file downloader. Install with: pkg install wget',
+            'openssh': 'OpenSSH is for secure remote access. Install with: pkg install openssh'
+        };
+        
+        Swal.fire({
+            title: pkg,
+            text: packages[pkg],
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+    
+    // Function to show a Termux tip
+    function showTermuxTip() {
+        const tips = [
+            "You can use Termux to run Python scripts on your Android device.",
+            "Termux supports SSH - you can connect to your phone from another device.",
+            "Install the 'termux-api' package to access Android features from the command line.",
+            "Use 'termux-setup-storage' to get access to your device storage.",
+            "Termux has its own package repository separate from standard Linux distros.",
+            "You can run a web server in Termux using Python: python -m http.server 8000",
+            "Termux supports many programming languages including Python, Ruby, and Node.js"
+        ];
+        
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        
+        Swal.fire({
+            title: 'Termux Tip',
+            text: randomTip,
+            icon: 'info',
+            confirmButtonText: 'Thanks!'
+        });
+    }
+    
+    // Function to show an Android tip
+    function showAndroidTip(tip) {
+        Swal.fire({
+            title: 'Android Tip',
+            text: tip,
+            icon: 'info',
+            confirmButtonText: 'Got it!'
+        });
+    }
+    
+    // Function to show random Android feature
+    function showAndroidFeature() {
+        const features = [
+            "Android supports split-screen multitasking on most devices running Android 7.0+",
+            "You can take scrolling screenshots on most modern Android devices",
+            "Android has a built-in screen recorder (enable in Quick Settings)",
+            "Developer options include animation scale settings to make your device feel faster",
+            "Android supports USB OTG for connecting external devices",
+            "You can change default apps for various actions in Settings > Apps > Default apps",
+            "Android has a hidden game in Settings > About phone > tap Android version several times"
+        ];
+        
+        const randomFeature = features[Math.floor(Math.random() * features.length)];
+        
+        Swal.fire({
+            title: 'Android Feature',
+            text: randomFeature,
+            icon: 'info',
+            confirmButtonText: 'Cool!'
+        });
+    }
+    
+    // Function to show Android version info
+    function showAndroidVersionInfo() {
+        const version = document.getElementById('android-version').value;
+        if (!version) {
+            document.getElementById('android-version-info').style.display = 'none';
+            return;
+        }
+        
+        const versions = {
+            '14': {
+                name: 'Android 14 (Beta)',
+                desc: 'The upcoming version of Android, currently in beta.',
+                features: 'Expected features include improved privacy controls, better tablet support, and more customization options.'
+            },
+            '13': {
+                name: 'Android 13 (Tiramisu)',
+                desc: 'Released in 2022, Android 13 focuses on privacy and personalization.',
+                features: 'Features include themed app icons, improved privacy dashboard, and per-app language preferences.'
+            },
+            '12': {
+                name: 'Android 12 (Snow Cone)',
+                desc: 'Released in 2021, Android 12 introduced Material You design language.',
+                features: 'Major visual overhaul, privacy indicators, improved performance, and scrolling screenshots.'
+            },
+            '11': {
+                name: 'Android 11 (Red Velvet Cake)',
+                desc: 'Released in 2020, focused on conversations, controls, and privacy.',
+                features: 'Chat bubbles, screen recording, one-time permissions, and improved media controls.'
+            },
+            '10': {
+                name: 'Android 10 (Quince Tart)',
+                desc: 'Released in 2019, first version without dessert name in public branding.',
+                features: 'System-wide dark mode, gesture navigation, focus mode, and live caption.'
+            }
+        };
+        
+        const info = versions[version];
+        document.getElementById('android-version-title').textContent = info.name;
+        document.getElementById('android-version-desc').textContent = info.desc;
+        document.getElementById('android-version-features').textContent = 'Key Features: ' + info.features;
+        document.getElementById('android-version-info').style.display = 'block';
+    }
+    
+    // Function to show a Windows shortcut
+    function showWindowsShortcut(shortcut) {
+        Swal.fire({
+            title: 'Windows Shortcut',
+            text: shortcut,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+    
+    // Function to show a Windows command
+    function showWindowsCommand(cmd) {
+        Swal.fire({
+            title: 'Windows Command',
+            html: `<p>Run this command in Command Prompt:</p>
+                  <div class="command-box">
+                      ${cmd}
+                  </div>
+                  ${document.getElementById('command-copy').checked ? 
+                  '<button class="ui-btn ui-btn-inline" onclick="copyToClipboard(\'' + cmd + '\')">Copy Command</button>' : ''}`,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+    
+    // Function to show Windows version info
+    function showWindowsVersion(version) {
+        let info = "";
+        
+        if (version === "10") {
+            info = "Windows 10 was released in 2015. It introduced the Edge browser, Cortana, and the Universal Windows Platform. Key features include the Start menu return, virtual desktops, and DirectX 12 support.";
+        } else if (version === "11") {
+            info = "Windows 11 was released in 2021. It features a centered Start menu, rounded corners, Android app support, and improved multitasking with Snap Layouts. Requires TPM 2.0 and secure boot.";
+        }
+        
+        Swal.fire({
+            title: `Windows ${version}`,
+            text: info,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+    
+    // Function to show Linux distro info
+    function showLinuxDistroInfo() {
+        const distro = document.getElementById('linux-distro').value;
+        if (!distro) {
+            document.getElementById('linux-distro-info').style.display = 'none';
+            return;
+        }
+        
+        const distros = {
+            'ubuntu': {
+                name: 'Ubuntu',
+                desc: 'One of the most popular Linux distributions, based on Debian.',
+                packages: 'Uses APT package manager with .deb packages. Known for its ease of use and large community.'
+            },
+            'debian': {
+                name: 'Debian',
+                desc: 'A stable and reliable distribution that forms the base for many others.',
+                packages: 'Uses APT package manager. Known for its strict free software policy and stability.'
+            },
+            'fedora': {
+                name: 'Fedora',
+                desc: 'Cutting-edge distribution sponsored by Red Hat.',
+                packages: 'Uses DNF package manager with .rpm packages. Often includes newest features.'
+            },
+            'arch': {
+                name: 'Arch Linux',
+                desc: 'A lightweight and flexible distribution following the KISS principle.',
+                packages: 'Uses Pacman package manager. Rolling release model with user-centric design.'
+            },
+            'kali': {
+                name: 'Kali Linux',
+                desc: 'Specialized distribution for penetration testing and security auditing.',
+                packages: 'Comes pre-installed with hundreds of security tools. Based on Debian.'
+            }
+        };
+        
+        const info = distros[distro];
+        document.getElementById('linux-distro-title').textContent = info.name;
+        document.getElementById('linux-distro-desc').textContent = info.desc;
+        document.getElementById('linux-distro-packages').textContent = 'Package Management: ' + info.packages;
+        document.getElementById('linux-distro-info').style.display = 'block';
+    }
+    
+    // Function to show a Linux command
+    function showLinuxCommand(cmd) {
+        Swal.fire({
+            title: 'Linux Command',
+            html: `<p>Run this command in terminal:</p>
+                  <div class="command-box">
+                      ${cmd}
+                  </div>
+                  ${document.getElementById('command-copy').checked ? 
+                  '<button class="ui-btn ui-btn-inline" onclick="copyToClipboard(\'' + cmd + '\')">Copy Command</button>' : ''}`,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+    
+    // Function to show about information
+    function showAbout() {
+        Swal.fire({
+            title: 'About Poisk-ls Tech Hub',
+            html: `<div class="developer-card">
+                    <h3>Poisk-ls Tech Hub</h3>
+                    <p>Your comprehensive resource for tech information and tools</p>
+                    <p>Developed by Poisk-ls</p>
+                    <div class="social-links">
+                        <a href="https://github.com/poisk-ls" onclick="showSocial('github')"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/poisk-ls" onclick="showSocial('linkedin')"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://poisk-ls.blogspot.com" onclick="showSocial('website')"><i class="fas fa-globe"></i></a>
+                    </div>
+                  </div>
+                  <p>Features include:</p>
+                  <ul style="text-align: left;">
+                      <li><i class="fas fa-terminal feature-icon"></i>Termux commands and tips</li>
+                      <li><i class="fab fa-android feature-icon"></i>Android developer resources</li>
+                      <li><i class="fab fa-windows feature-icon"></i>Windows shortcuts and tools</li>
+                      <li><i class="fab fa-linux feature-icon"></i>Linux distribution information</li>
+                      <li><i class="fas fa-cog feature-icon"></i>Customizable settings</li>
+                  </ul>`,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+    
+    // Function to show social media info
+    function showSocial(network) {
+        const networks = {
+            'github': 'GitHub: https://github.com/poisk-ls',
+            'linkedin': 'LinkedIn: https://linkedin.com/in/poisk-ls',
+            'website': 'Website: https://poisk-ls.blogspot.com'
+        };
+        
+        Swal.fire({
+            title: network.charAt(0).toUpperCase() + network.slice(1),
+            text: networks[network],
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+    
+    // Function to copy text to clipboard
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            Swal.fire({
+                title: 'Copied!',
+                text: 'Command copied to clipboard',
+                icon: 'success',
+                timer: 1000,
+                showConfirmButton: false
+            });
+        });
+    }
+    
+    // Function to open tabs
+    function openTab(tabId) {
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        // Deactivate all tab buttons
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.classList.remove('active');
+        });
+        
+        // Show the selected tab content
+        document.getElementById(tabId).classList.add('active');
+        
+        // Activate the clicked button
+        event.target.classList.add('active');
+    }
+    
+    // Function to open Termux tabs
+    function openTermuxTab(tabId) {
+        // Hide all tab contents
+        document.querySelectorAll('#termux .tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        // Deactivate all tab buttons
+        document.querySelectorAll('#termux .tab-button').forEach(button => {
+            button.classList.remove('active');
+        });
+        
+        // Show the selected tab content
+        document.getElementById(tabId).classList.add('active');
+        
+        // Activate the clicked button
+        event.target.classList.add('active');
+    }
+    
+    // Function to save settings
+    function saveSettings() {
+        const theme = document.getElementById('theme-select').value;
+        const fontSize = document.getElementById('font-size').value;
+        
+        // Apply theme
+        if (theme === 'dark') {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+        
+        // Apply font size
+        document.body.style.fontSize = fontSize === 'small' ? '14px' : 
+                                     fontSize === 'medium' ? '16px' : '18px';
+        
+        Swal.fire({
+            title: 'Settings Saved',
+            text: 'Your preferences have been saved',
+            icon: 'success',
+            timer: 1000,
+            showConfirmButton: false
+        });
+        
+        // Go back to home page after a delay
+        setTimeout(() => {
+            $.mobile.changePage("#home");
+        }, 1000);
+    }
+    
+    // Function to search tech topics
+    function searchTech() {
+        const query = document.getElementById('search-input').value.toLowerCase();
+        if (!query) {
+            Swal.fire({
+                title: 'Empty Search',
+                text: 'Please enter a search term',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+        
+        const results = [];
+        
+        // Check categories (simplified for demo)
+        const categories = {
+            'termux': 'Termux - Linux environment for Android',
+            'android': 'Android - Mobile operating system',
+            'windows': 'Windows - Desktop operating system',
+            'linux': 'Linux - Open-source operating system'
+        };
+        
+        for (const [page, desc] of Object.entries(categories)) {
+            if (desc.toLowerCase().includes(query)) {
+                results.push(desc);
+            }
+        }
+        
+        if (results.length > 0) {
+            Swal.fire({
+                title: 'Search Results',
+                html: `<p>Found ${results.length} result(s):</p>
+                      <ul style="text-align: left;">
+                          ${results.map(result => `<li>${result}</li>`).join('')}
+                      </ul>`,
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+        } else {
+            Swal.fire({
+                title: 'No Results',
+                text: 'No matching tech topics found',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+        }
+    }
+    
+    // Quick tools functions
+    function showIP() {
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    title: 'Your IP Address',
+                    text: data.ip,
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+            })
+            .catch(() => {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Could not retrieve IP address',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+    }
+    
+    function showUserAgent() {
+        Swal.fire({
+            title: 'Your User Agent',
+            text: navigator.userAgent,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+    
+    function pingTest() {
+        const start = new Date().getTime();
+        fetch('https://www.google.com/favicon.ico?' + new Date().getTime())
+            .then(() => {
+                const latency = new Date().getTime() - start;
+                Swal.fire({
+                    title: 'Ping Test',
+                    html: `Successfully pinged Google.com<br>Latency: ${latency}ms`,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            })
+            .catch(() => {
+                Swal.fire({
+                    title: 'Ping Test Failed',
+                    text: 'Could not reach Google.com',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+    }
+    
+    function showScreenResolution() {
+        Swal.fire({
+            title: 'Screen Resolution',
+            html: `Width: ${screen.width}px<br>Height: ${screen.height}px<br>
+                  Available Width: ${screen.availWidth}px<br>Available Height: ${screen.availHeight}px`,
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+    
+    // Initialize the app
+    $(document).on("pagecreate", "#home", function() {
+        // Add some terminal lines for effect
+        const terminal = document.getElementById('termux-terminal');
+        if (terminal) {
+            setTimeout(() => {
+                terminal.innerHTML += '<div class="terminal-line"><span class="terminal-prompt">$</span> pkg install python</div>';
+            }, 1000);
+            setTimeout(() => {
+                terminal.innerHTML += '<div class="terminal-line">Collecting packages...</div>';
+            }, 2000);
+            setTimeout(() => {
+                terminal.innerHTML += '<div class="terminal-line">Python 3.9 installed successfully</div>';
+                terminal.innerHTML += '<div class="terminal-line"><span class="terminal-prompt">$</span> _</div>';
+            }, 3000);
+        }
+        
+        // Load settings if any
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('theme-select').value = 'dark';
+        }
+        
+        if (localStorage.getItem('fontSize') === 'small') {
+            document.body.style.fontSize = '14px';
+            document.getElementById('font-size').value = 'small';
+        } else if (localStorage.getItem('fontSize') === 'large') {
+            document.body.style.fontSize = '18px';
+            document.getElementById('font-size').value = 'large';
+        }
+    });
+</script>
+
+</body>
+</html>
