@@ -15,8 +15,9 @@
 
 #
 
-### Download Mobile App
+> Note: Required Internet Connection to run smoothly. 🔥
 
+### Download Mobile App
 
 | id |Download | Size |
 | ------------- | ------------- | ------------- |
