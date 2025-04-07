@@ -16,4 +16,8 @@
 #
 
 ### Download Mobile App
-App v1: [Download App](https://www.mediafire.com/file/ofe82rwp71f9pcg/poisk-ls_Tech-Hub.apk/file)
+
+
+| id |Download | Size |
+| ------------- | ------------- | ------------- |
+| App v1 | [Download App](https://www.mediafire.com/file/ofe82rwp71f9pcg/poisk-ls_Tech-Hub.apk/file) | 1.7Mb+ |
