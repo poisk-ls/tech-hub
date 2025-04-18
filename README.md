@@ -21,4 +21,4 @@
 
 | id |Download | Size |
 | ------------- | ------------- | ------------- |
-| App v1 | [Download App](https://github.com/poisk-ls/tech-hub/blame/master/poisk-ls%20Tech-Hub.apk) | 1.7Mb+ |
+| App v1 | [Download App fix](https://github.com/poisk-ls/tech-hub/blob/master/poisk-ls Tech-Hub fix.apk) | 1.7Mb+ |
