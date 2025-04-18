@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -201,7 +202,7 @@
             border-radius: 0 0 5px 5px;
         }
         .dark-mode .tab-content {
-            border-color: #444!important;
+            border-color: #444mportant;
             background-color: #333!important;
         }
         .tab-content.active {
@@ -224,6 +225,46 @@
         li{
           list-style-type: none!important;
         }
+        /* Add these styles to improve command list readability */
+.ui-listview a {
+  padding: 12px 15px !important;
+  font-size: 16px;
+  color: #333 !important;
+  border-bottom: 1px solid #eee !important;
+}
+
+.dark-mode .ui-listview a {
+  color: #000 !important;
+  border-bottom: 1px solid #444 !important;
+}
+
+.ui-listview a:hover {
+  background-color: #f5f5f5 !important;
+}
+
+.dark-mode .ui-listview a:hover {
+  background-color: #444 !important;
+}
+
+.ui-listview .ui-list-divider {
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px 15px;
+  background-color: #f7f7f7 !important;
+  color: #333 !important;
+}
+
+.dark-mode .ui-listview .ui-list-divider {
+  background-color: #333 !important;
+  color: #eee !important;
+}
+
+.ui-listview {
+  margin: 1em 0 !important;
+}
+*{
+    text-shadow: none!important;
+}
     </style>
 </head>
 <body>
@@ -346,18 +387,18 @@
                 <button class="tab-button" onclick="openTermuxTab('tutorial-tab')">Tutorial</button>
             </div>
             
-            <div id="commands-tab" class="tab-content active">
-                <ul data-role="listview" data-inset="true">
-                    <li data-role="list-divider">Common Commands</li>
-                    <li><a href="#" onclick="showCommand('pkg update && pkg upgrade')">Update packages</a></li>
-                    <li><a href="#" onclick="showCommand('pkg install [package-name]')">Install a package</a></li>
-                    <li><a href="#" onclick="showCommand('pkg list-all')">List available packages</a></li>
-                    <li><a href="#" onclick="showCommand('cd [directory]')">Change directory</a></li>
-                    <li><a href="#" onclick="showCommand('ls')">List files</a></li>
-                    <li><a href="#" onclick="showCommand('termux-setup-storage')">Setup storage access</a></li>
-                    <li><a href="#" onclick="showCommand('ssh user@host')">SSH connection</a></li>
-                </ul>
-            </div>
+        <div id="commands-tab" class="tab-content active">
+  <ul data-role="listview" data-inset="true" class="command-list">
+    <li data-role="list-divider">Common Commands</li>
+    <li><a href="#" onclick="showCommand('pkg update && pkg upgrade')">Update packages</a></li>
+    <li><a href="#" onclick="showCommand('pkg install [package-name]')">Install a package</a></li>
+    <li><a href="#" onclick="showCommand('pkg list-all')">List available packages</a></li>
+    <li><a href="#" onclick="showCommand('cd [directory]')">Change directory</a></li>
+    <li><a href="#" onclick="showCommand('ls')">List files</a></li>
+    <li><a href="#" onclick="showCommand('termux-setup-storage')">Setup storage access</a></li>
+    <li><a href="#" onclick="showCommand('ssh user@host')">SSH connection</a></li>
+  </ul>
+</div>
             
             <div id="packages-tab" class="tab-content">
                 <ul data-role="listview" data-inset="true">
